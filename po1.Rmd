@@ -1,0 +1,51 @@
+
+```{r}
+library(haven)
+library(dplyr)
+Adata <- read_sav("C:/Users/Colin/Documents/GitHub/po1/AQ.sav")
+Adf <- Adata %>% 
+  filter(Asian == "1" & Conditions == "Ingroup")
+
+t.test(Adf$Q95, Adf$Asian_Warmth, paired = TRUE, alternative = "two.sided")
+
+
+```
+
+```{r}
+library(ggplot2)
+library(ggpubr)
+Before <-Adf$Q95
+After <-Adf$Asian_Warmth
+d <- data.frame(Before = Before, After = After)
+         ggpaired(d, cond1 = "Before", cond2 = "After",
+         fill = "condition", line.color = "gray", line.size = 0.4,
+         palette = "rainbow") +
+ stat_compare_means(vjust = -0.4, method = "t.test", paired = TRUE)
+  
+
+```
+
+
+```{r}
+
+library(tidyverse)
+library(rafalib)
+
+mypar(1,1)
+dat <- list(Before=Adf$Q95, After=Adf$Asian_Warmth)
+dat %>%
+   boxplot(xlab = "Condition",
+           ylab = "Warmth",
+           cex = 0)
+ dat %>%
+   stripchart(
+     vertical = TRUE,
+     method = "jitter",
+     pch = 16,
+     add = TRUE,
+     col = 1
+   )
+mtext(text="p = .027", side = 3, adj = 1, col = 1, cex = 1.25, font = 4)
+```
+
+
