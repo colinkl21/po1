@@ -1,3 +1,9 @@
+---
+title: "Po 1- Boxplots"
+author: "Colin Li"
+date: "1/17/2023"
+output: github_document
+---
 
 ```{r}
 library(haven)
