@@ -14,24 +14,45 @@ Adf <- Adata %>%
 
 t.test(Adf$Q95, Adf$Asian_Warmth, paired = TRUE, alternative = "two.sided")
 
+Wdf <- Adata %>%
+  filter(Asian == "1" & Conditions == "Outgroup")
+
+t.test(Wdf$Q96, Wdf$White_Warmth, paired = TRUE, alternative = "two.sided")
 
 ```
-
+#before and after attitude toward Asians
 ```{r}
 library(ggplot2)
 library(ggpubr)
 Before <-Adf$Q95
 After <-Adf$Asian_Warmth
-d <- data.frame(Before = Before, After = After)
-         ggpaired(d, cond1 = "Before", cond2 = "After",
-         fill = "condition", line.color = "gray", line.size = 0.4,
-         palette = "rainbow") +
- stat_compare_means(vjust = -0.4, method = "t.test", paired = TRUE)
+Adf2 <- data.frame(Before = Before, After = After)
+         ggpaired(Adf2, cond1 = "Before", cond2 = "After",
+         fill = "condition", line.color = "gray", line.size = 0.3,
+         palette = "jco", xlab = "Condition (df = 91)", ylab = "Asian Warmth") + 
+           scale_y_continuous(limit = c(0, 10)) +
+ stat_compare_means(method = "t.test", paired = TRUE)
   
 
 ```
 
+#before and after attitude toward Whites
+```{r}
+library(ggplot2)
+library(ggpubr)
+Before <-Wdf$Q96
+After <-Wdf$White_Warmth
+Wdf2 <- data.frame(Before = Before, After = After)
+Wdf2 <- Wdf2[complete.cases(Wdf2),]
+         ggpaired(Wdf2, cond1 = "Before", cond2 = "After",
+         fill = "condition", line.color = "gray", line.size = 0.3,
+         palette = "jco", xlab = "Condition (df = 88)", ylab = "White Warmth") +
+                      scale_y_continuous(limit = c(0, 10)) +
+ stat_compare_means(method = "t.test", paired = TRUE, na.rm = TRUE)
+  
 
+```
+#Asian attitude--a different style boxplot
 ```{r}
 
 library(tidyverse)
@@ -40,8 +61,8 @@ library(rafalib)
 mypar(1,1)
 dat <- list(Before=Adf$Q95, After=Adf$Asian_Warmth)
 dat %>%
-   boxplot(xlab = "Condition",
-           ylab = "Warmth",
+   boxplot(xlab = "Condition (df = 91)",
+           ylab = "Asian Warmth",
            cex = 0)
  dat %>%
    stripchart(
@@ -53,5 +74,26 @@ dat %>%
    )
 mtext(text="p = .027", side = 3, adj = 1, col = 1, cex = 1.25, font = 4)
 ```
+#White attitude--a different style boxplot
 
+```{r}
+library(tidyverse)
+library(rafalib)
+
+mypar(1,1)
+list(Wdf)
+Wdf2 %>%
+   boxplot(xlab = "Condition (df = 88)",
+           ylab = "White Warmth",
+           cex = 0)
+ Wdf2 %>%
+   stripchart(
+     vertical = TRUE,
+     method = "jitter",
+     pch = 16,
+     add = TRUE,
+     col = 1
+   )
+mtext(text="p = .664", side = 3, adj = 1, col = 1, cex = 1.25, font = 4)
+```
 
