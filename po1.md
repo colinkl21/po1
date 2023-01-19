@@ -82,7 +82,11 @@ Adf2 <- data.frame(Before = Before, After = After)
          fill = "condition", line.color = "gray", line.size = 0.3,
          palette = "jco", xlab = "Condition", ylab = "Asian Warmth", caption = "t(91) = 2.25, 95% CI [0.03 0.43], Cohen's d = 0.24
 ") +      scale_y_continuous(limit = c(0, 10)) +
- stat_compare_means(vjust = 0.5, method = "t.test", paired = TRUE)
+ stat_compare_means(vjust = 0.5, method = "t.test", paired = TRUE) +
+  stat_summary(fun = "mean",
+               geom = "point", 
+               width = 0.5,
+               colour = "white")
 ```
 
     ## Warning: `gather_()` was deprecated in tidyr 1.2.0.
@@ -92,6 +96,9 @@ Adf2 <- data.frame(Before = Before, After = After)
 
     ## Warning: attributes are not identical across measure variables;
     ## they will be dropped
+
+    ## Warning in stat_summary(fun = "mean", geom = "point", width = 0.5, colour =
+    ## "white"): Ignoring unknown parameters: `width`
 
 ![](po1_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
@@ -109,11 +116,17 @@ Wdf2 <- Wdf2[complete.cases(Wdf2),]
          palette = "jco", xlab = "Condition", ylab = "White Warmth", caption = "t(88) = -0.44, 95% CI [-0.19, 0.12], Cohen's d = -0.05
 ") +
                       scale_y_continuous(limit = c(0, 10)) +
- stat_compare_means(vjust = 0.5, method = "t.test", paired = TRUE, na.rm = TRUE)
+ stat_compare_means(vjust = 0.5, method = "t.test", paired = TRUE, na.rm = TRUE) +  stat_summary(fun = "mean",
+               geom = "point", 
+               width = 0.5,
+               colour = "white")
 ```
 
     ## Warning: attributes are not identical across measure variables;
     ## they will be dropped
+
+    ## Warning in stat_summary(fun = "mean", geom = "point", width = 0.5, colour =
+    ## "white"): Ignoring unknown parameters: `width`
 
 ![](po1_files/figure-gfm/unnamed-chunk-3-1.png)<!-- --> \#Asian
 attitude–a different style boxplot
