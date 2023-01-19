@@ -20,11 +20,23 @@ library(dplyr)
     ##     intersect, setdiff, setequal, union
 
 ``` r
+library(effsize)
+library(rstatix)
+```
+
+    ## 
+    ## Attaching package: 'rstatix'
+
+    ## The following object is masked from 'package:stats':
+    ## 
+    ##     filter
+
+``` r
 Adata <- read_sav("C:/Users/Colin/Documents/GitHub/po1/AQ.sav")
 Adf <- Adata %>% 
   filter(Asian == "1" & Conditions == "Ingroup")
 
-t.test(Adf$Q95, Adf$Asian_Warmth, paired = TRUE, alternative = "two.sided")
+t.test(Adf$Q95, Adf$Asian_Warmth, paired = TRUE, alternative = "two.sided") 
 ```
 
     ## 
@@ -68,9 +80,9 @@ After <-Adf$Asian_Warmth
 Adf2 <- data.frame(Before = Before, After = After)
          ggpaired(Adf2, cond1 = "Before", cond2 = "After",
          fill = "condition", line.color = "gray", line.size = 0.3,
-         palette = "jco", xlab = "Condition (df = 91)", ylab = "Asian Warmth") + 
-           scale_y_continuous(limit = c(0, 10)) +
- stat_compare_means(method = "t.test", paired = TRUE)
+         palette = "jco", xlab = "Condition", ylab = "Asian Warmth", caption = "t(91) = 2.25, 95% CI [0.03 0.43], Cohen's d = 0.24
+") +      scale_y_continuous(limit = c(0, 10)) +
+ stat_compare_means(vjust = 0.5, method = "t.test", paired = TRUE)
 ```
 
     ## Warning: `gather_()` was deprecated in tidyr 1.2.0.
@@ -94,9 +106,10 @@ Wdf2 <- data.frame(Before = Before, After = After)
 Wdf2 <- Wdf2[complete.cases(Wdf2),]
          ggpaired(Wdf2, cond1 = "Before", cond2 = "After",
          fill = "condition", line.color = "gray", line.size = 0.3,
-         palette = "jco", xlab = "Condition (df = 88)", ylab = "White Warmth") +
+         palette = "jco", xlab = "Condition", ylab = "White Warmth", caption = "t(88) = -0.44, 95% CI [-0.19, 0.12], Cohen's d = -0.05
+") +
                       scale_y_continuous(limit = c(0, 10)) +
- stat_compare_means(method = "t.test", paired = TRUE, na.rm = TRUE)
+ stat_compare_means(vjust = 0.5, method = "t.test", paired = TRUE, na.rm = TRUE)
 ```
 
     ## Warning: attributes are not identical across measure variables;
@@ -114,8 +127,8 @@ library(tidyverse)
     ## ✔ tidyr   1.2.1     ✔ stringr 1.5.0
     ## ✔ readr   2.1.3     ✔ forcats 0.5.2
     ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
+    ## ✖ rstatix::filter() masks dplyr::filter(), stats::filter()
+    ## ✖ dplyr::lag()      masks stats::lag()
 
 ``` r
 library(rafalib)
@@ -123,7 +136,7 @@ library(rafalib)
 mypar(1,1)
 dat <- list(Before=Adf$Q95, After=Adf$Asian_Warmth)
 dat %>%
-   boxplot(xlab = "Condition (df = 91)",
+   boxplot(xlab = "Condition",
            ylab = "Asian Warmth",
            cex = 0)
  dat %>%
@@ -132,9 +145,9 @@ dat %>%
      method = "jitter",
      pch = 16,
      add = TRUE,
-     col = 1
-   )
-mtext(text="p = .027", side = 3, adj = 1, col = 1, cex = 1.25, font = 4)
+     col = "#02a4d3"
+   ) 
+mtext(text="t(91) = 2.25, p = .027, 95% CI [0.03 0.43], Cohen's d = 0.24", side = 3, adj = 1, col = "black", cex = 0.8, font = 9)
 ```
 
 ![](po1_files/figure-gfm/unnamed-chunk-4-1.png)<!-- --> \#White
@@ -172,7 +185,7 @@ list(Wdf)
 
 ``` r
 Wdf2 %>%
-   boxplot(xlab = "Condition (df = 88)",
+   boxplot(xlab = "Condition",
            ylab = "White Warmth",
            cex = 0)
  Wdf2 %>%
@@ -181,9 +194,9 @@ Wdf2 %>%
      method = "jitter",
      pch = 16,
      add = TRUE,
-     col = 1
+     col = "#02a4d3"
    )
-mtext(text="p = .664", side = 3, adj = 1, col = 1, cex = 1.25, font = 4)
+mtext(text= "t(88) = -0.44, p = .664, 95% CI [-0.19, 0.12], Cohen's d = -0.05", side = 3, adj = 1, col = "black", cex = 0.8, font = 9)
 ```
 
 ![](po1_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
